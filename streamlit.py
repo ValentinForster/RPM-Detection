@@ -4,14 +4,15 @@ import numpy as np
 from scipy.stats import entropy
 
 st.title("RPM detection tool")
-st.write("This tool will find indications of Resale Price Maintenance (RPM) in price data. To use it, upload your data as csv with the following headers:")
-st.markdown("""
-- Product
-- Vendor
-- Price (ideally without shipping cost)
-- Date
-- (optional) Manufacturer
-""")
+st.write("This tool will find indications of Resale Price Maintenance (RPM) in price data. To use it, upload your data as csv. 
+Each row should represent one offering by one vendor for a specific product. Your csv should look like this")
+
+example_df = {"Product": ["Samsung Galaxy A25", "Samsung Galaxy A25", "IPhone 15 (256 GB)"],
+              "Vendor": ["Amazon", "Walmart", "Alibaba"],
+              "Price": [190.85, 195.00, 795.00],
+              "Date": ["2024-08-26", "2024-08-26", "2024-08-24"]}
+
+st.write(pd.DataFrame(example_df))
 
 uploaded_file = st.file_uploader("Upload your CSV file", type="csv")
 if uploaded_file is not None:
