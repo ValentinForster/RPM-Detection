@@ -289,5 +289,5 @@ if uploaded_file is not None:
     sus = sus.sort_values(by='pct_suspicious_models', ascending=False)
 
     st.write(sus)
-    st.title("Explanation")
+    st.markdown("""**Explanation**""")
     st.write("This table show the percentage of suspicious models for each Manufacturer in the dataset.")
