@@ -4,6 +4,13 @@ import numpy as np
 from scipy.stats import entropy
 
 st.title("RPM detection tool")
+st.write("This tool will find indications of Resale Price Maintenance (RPM) in price data. To use it, upload your data as csv with the following headers:")
+st.markdown("""
+- Product
+- Vendor
+- Price (ideally without shipping cost)
+- Date
+""")
 
 uploaded_file = st.file_uploader("Upload your CSV file", type="csv")
 if uploaded_file is not None:
