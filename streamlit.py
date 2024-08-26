@@ -10,6 +10,7 @@ st.markdown("""
 - Vendor
 - Price (ideally without shipping cost)
 - Date
+- (optional) Manufacturer
 """)
 
 uploaded_file = st.file_uploader("Upload your CSV file", type="csv")
