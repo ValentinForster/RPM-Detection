@@ -10,7 +10,7 @@ Each row should represent one offering by one vendor for a specific product. You
 example_df = {"Manufacturer": ["Samsung", "Samsung", "Apple"],
               "Product": ["Galaxy A25", "Galaxy A25", "IPhone 15 (256 GB)"],
               "Vendor": ["Amazon", "Walmart", "Alibaba"],
-              "Price": [190.85, 195.00, 795.00],
+              "Price": [190.85, 195.00, 795.99],
               "Date": ["2024-08-26", "2024-08-26", "2024-08-24"]}
 
 st.write(pd.DataFrame(example_df))
