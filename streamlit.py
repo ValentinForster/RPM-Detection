@@ -266,8 +266,6 @@ if uploaded_file is not None:
 
     results = results.reindex(columns=new_column_order).sort_values(by='sus_count', ascending=False)
 
-    print(results.mean())
-
     # Filter the DataFrame for rows where sus_count is greater than 2
     df_filtered = results[results['sus_count'] > 2]
 
