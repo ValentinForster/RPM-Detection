@@ -5,7 +5,7 @@ from scipy.stats import entropy
 
 st.title("RPM detection tool")
 st.write("""This tool will find indications of Resale Price Maintenance (RPM) in price data. To use it, upload your data as csv. 
-Each row should represent one offering by one vendor for a specific product. Your csv should look like this""")
+Each row should represent one offering by one vendor for a specific product. Your csv should look like this:""")
 
 example_df = {"Manufacturer": ["Samsung", "Samsung", "Apple"],
               "Product": ["Galaxy A25", "Galaxy A25", "IPhone 15 (256 GB)"],
@@ -289,5 +289,5 @@ if uploaded_file is not None:
     sus = sus.sort_values(by='pct_suspicious_models', ascending=False)
 
     st.write(sus)
-    st.write("Explanation:")
-    st.write("This table show the percentage of suspicious models for each Manufacturer in the dataset")
+    st.title("Explanation")
+    st.write("This table show the percentage of suspicious models for each Manufacturer in the dataset.")
