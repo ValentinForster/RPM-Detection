@@ -288,7 +288,6 @@ if uploaded_file is not None:
     sus['pct_suspicious_models'] = sus['sus_count'] / sus['total_models']
     sus = sus.sort_values(by='pct_suspicious_models', ascending=False)
 
-    st.write(sus, hide_index=True)
     st.dataframe(sus, hide_index=True)
     st.markdown("""**Explanation**""")
     st.write("This table show the percentage of suspicious models for each Manufacturer in the dataset.")
