@@ -1,10 +1,19 @@
 import streamlit as st
 import pandas as pd
-import matplotlib.pyplot as plt
 import numpy as np
 from scipy.stats import entropy
 
 st.title("RPM detection tool")
+st.write("""This tool will find indications of Resale Price Maintenance (RPM) in price data. To use it, upload your data as csv. 
+Each row should represent one offering by one vendor for a specific product. Your csv should look like this:""")
+
+example_df = {"Manufacturer": ["Samsung", "Samsung", "Apple"],
+              "Product": ["Galaxy A25", "Galaxy A25", "IPhone 15 (256 GB)"],
+              "Vendor": ["Amazon", "Walmart", "Alibaba"],
+              "Price": [190.85, 195.00, 795.99],
+              "Date": ["2024-08-26", "2024-08-26", "2024-08-24"]}
+
+st.write(pd.DataFrame(example_df))
 
 uploaded_file = st.file_uploader("Upload your CSV file", type="csv")
 if uploaded_file is not None:
@@ -267,8 +276,6 @@ if uploaded_file is not None:
 
     results = results.reindex(columns=new_column_order).sort_values(by='sus_count', ascending=False)
 
-    print(results.mean())
-
     # Filter the DataFrame for rows where sus_count is greater than 2
     df_filtered = results[results['sus_count'] > 2]
 
@@ -283,3 +290,5 @@ if uploaded_file is not None:
 
     st.write(sus, hide_index=True)
     st.dataframe(sus, hide_index=True)
+    st.markdown("""**Explanation**""")
+    st.write("This table show the percentage of suspicious models for each Manufacturer in the dataset.")
