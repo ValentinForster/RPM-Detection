@@ -13,7 +13,16 @@ example_df = {"Manufacturer": ["Samsung", "Samsung", "Apple"],
               "Price": [190.85, 195.00, 795.99],
               "Date": ["2024-08-26", "2024-08-26", "2024-08-24"]}
 
-st.write(pd.DataFrame(example_df))
+st.dataframe(example_df, hide_index=True)
+
+# Offer the CSV file for download as bytes
+with open("Geschirrspüler/Geschirrspüler, 'rb') as f:
+    st.download_button(
+        label="Download original CSV",
+        data=f,
+        file_name='Geschirrspüler.csv',
+        mime='text/csv',
+    )
 
 uploaded_file = st.file_uploader("Upload your CSV file", type="csv")
 if uploaded_file is not None:
