@@ -7,11 +7,11 @@ st.title("RPM detection tool")
 st.write("""This tool will find indications of Resale Price Maintenance (RPM) in price data. To use it, upload your data as csv. 
 Each row should represent one offering by one vendor for a specific product. Your csv should look like this:""")
 
-example_df = {"Manufacturer": ["Samsung", "Samsung", "Apple"],
-              "Product": ["Galaxy A25", "Galaxy A25", "IPhone 15 (256 GB)"],
-              "Vendor": ["Amazon", "Walmart", "Alibaba"],
-              "Price": [190.85, 195.00, 795.99],
-              "Date": ["2024-08-26", "2024-08-26", "2024-08-24"]}
+example_df = {"Manufacturer": ["Samsung", "Samsung", "Apple", "..."],
+              "Product": ["Galaxy A25", "Galaxy A25", "IPhone 15 (256 GB)", "..."],
+              "Vendor": ["Amazon", "Walmart", "Alibaba", "..."],
+              "Price": [190.85, 195.00, 795.99, "..."],
+              "Date": ["2024-08-26", "2024-08-26", "2024-08-24", "..."]}
 
 st.dataframe(example_df, hide_index=True)
 
