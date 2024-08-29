@@ -16,9 +16,9 @@ example_df = {"Manufacturer": ["Samsung", "Samsung", "Apple"],
 st.dataframe(example_df, hide_index=True)
 
 # Offer the CSV file for download as bytes
-with open("Geschirrspüler/Geschirrspüler, 'rb') as f:
+with open("Geschirrspüler/Geschirrspüler.csv, 'rb') as f:
     st.download_button(
-        label="Download original CSV",
+        label="Download sample data",
         data=f,
         file_name='Geschirrspüler.csv',
         mime='text/csv',
