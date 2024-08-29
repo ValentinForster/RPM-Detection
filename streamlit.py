@@ -24,7 +24,7 @@ with open("Gefrierschränke/Gefrierschränke.csv", 'rb') as f:
         mime='text/csv',
     )
 
-uploaded_file = st.file_uploader("Upload your CSV file", type="csv")
+uploaded_file = st.file_uploader("Upload your CSV file to get it analyzed regarding RPM", type="csv")
 if uploaded_file is not None:
     df = pd.read_csv(uploaded_file, sep=",", dtype={"Vendor": str}, index_col=0)
 
