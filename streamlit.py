@@ -299,4 +299,4 @@ if uploaded_file is not None:
 
     st.dataframe(sus, hide_index=True)
     st.markdown("""**Explanation**""")
-    st.write("This table show the percentage of suspicious models for each Manufacturer in the dataset.")
+    st.write("This table shows the number as well as the percentage of suspicious models for each Manufacturer in the dataset.")
