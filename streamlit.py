@@ -20,7 +20,7 @@ with open("Gefrierschränke/Gefrierschränke.csv", 'rb') as f:
     st.download_button(
         label="Download sample data",
         data=f,
-        file_name='Freezer_price_in_Austria_2024.csv',
+        file_name='Freezer_prices_in_Austria_2024.csv',
         mime='text/csv',
     )
 
