@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 from scipy.stats import entropy
+import csv
 
 st.title("RPM detection tool")
 st.write("""This tool will find indications of Resale Price Maintenance (RPM) in price data. To use it, upload your data as csv. 
@@ -25,11 +26,42 @@ with open("Gefrierschränke/Gefrierschränke.csv", 'rb') as f:
     )
 
 uploaded_file = st.file_uploader("Upload your CSV file to get it analyzed regarding RPM", type="csv")
+
 if uploaded_file is not None:
-    df = pd.read_csv(uploaded_file, sep=",", dtype={"Vendor": str}, index_col=0)
+
+    # Data cleaning ------------------------------------------------------------------------------------------------------------------------------------------
+    def detect_delimiter(filename):
+        with open(filename, 'r') as file:
+            sniffer = csv.Sniffer()
+            return sniffer.sniff(file.read(5000)).delimiter
+
+    # To adjust for different column names in the CSV files
+    column_mapping = {
+        'Model': ['Model', 'Product', 'Item'],
+        'Vendor': ['Vendor', 'Seller', 'Retailer'],
+        'Price_w/o_shipping': ['Price_w/o_shipping', 'Price', 'Cost'],
+        'Date': ['Date', 'Timestamp', 'SaleDate']
+    }
+
+    delimiter = detect_delimiter(uploaded_file)
+
+    df = pd.read_csv(uploaded_file, sep=delimiter, dtype=str)
+
+    # Standardize column names
+    df.columns = df.columns.str.strip().str.lower()
+    for standard_name, possible_names in column_mapping.items():
+        for possible_name in possible_names:
+            if possible_name.lower() in df.columns:
+                df.rename(columns={possible_name.lower(): standard_name}, inplace=True)
+                break
 
     # Make Price column to type float. If the price is already in correct format, this will have no effect
-    df["Price_w/o_shipping"] = df["Price_w/o_shipping"].str.replace("€ ", "").str.replace(",", ".").astype(float)
+    df["Price_w/o_shipping"] = (
+        df["Price_w/o_shipping"]
+        .str.replace(r'[^\d.,]', '', regex=True)  # Remove any non-numeric characters except commas and periods
+        .str.replace(",", ".")                    # Replace comma with period
+        .astype(float)
+    )
 
     # Create column for manufacturer by taking first word of Model name (if it is not already in the dataset)
     if 'Manufacturer' not in df.columns:
@@ -43,7 +75,7 @@ if uploaded_file is not None:
     df = df.dropna()
     print(f"After dropping NA: {len(df)}")
 
-    # Delete rows where Manufacturer name is in Vendor (meaning that the vendor is a shop operated by the manufacturer).
+    # Delete rows where Manufacturer name is in Vendor (meaning that the vendor is a store operated by the manufacturer). No RPM possible when vendor and manufacturer is the same company
     df['Manufacturer'] = df['Manufacturer'].astype(str)
     df['Vendor'] = df['Vendor'].astype(str)
     df = df[~df.apply(lambda row: row['Manufacturer'] in row['Vendor'], axis=1)]
@@ -61,7 +93,7 @@ if uploaded_file is not None:
     df = df.loc[idx].reset_index(drop=True)
     print(f"After dropping variants of each model: {len(df)}")
 
-    # Calculate the number of vendors for each machine
+    # Calculate the number of vendors for each product
     df["Count_vendors"] = df.groupby(["Model", "Date"])["Model"].transform("count")
 
     # Add median, std, mean and coef_var per distinct model and date pair.
@@ -156,24 +188,11 @@ if uploaded_file is not None:
                         'coef_var_among_vendors']
 
     df = df.reindex(columns=new_column_order)
-
-    # Get counts of distinct vendors, models and manufacturers again, to compare to the numbers before cleaning
-    num_vendors = df['Vendor'].nunique()
-    num_models = df['Model'].nunique()
-    num_hersteller = df['Manufacturer'].nunique()
-
-    print(f"The dataset now has {len(df)} rows, {num_vendors} vendors, {num_models} models from {num_hersteller} manufacturers")
-
-    # ------------------------------------------------------------------------------------------------------------------------------------------
-
-    # Make date column to datetime
-    df['Date'] = pd.to_datetime(df['Date'])
-
+    # ------------------------------------------------------------------------------------------------------------------------------------------------------------------
     avg_coef_var = df.groupby('Model')['coef_var_among_vendors'].mean().reset_index()
     avg_coef_var = avg_coef_var.rename(columns={'coef_var_among_vendors': 'mean_coef_var'})
 
     median_price = df['Price_w/o_shipping'].median()
-    print(f"Median price of all models: {median_price}")
 
     # Round prices so for example 799.90 € and 799.99 € are counted as the same price. Adjust rounding according to magnitude of prices, to adjust for high-price products or other currencies (e.g. japanese yen).
     if median_price < 500:
@@ -220,7 +239,6 @@ if uploaded_file is not None:
     same_price_pct = pd.merge(same_price_pct, manufacturer_model, on='Model')
 
     same_price_pct = same_price_pct.groupby(by='Model')['same_price_pct'].mean(numeric_only=False).reset_index()
-    print('Welche Modelle haben im Schnitt wie oft den selben Preis?')
 
     # Filter the price_counts df to only include the minimum prices
     cheap_same_price = price_counts[price_counts['Is_Min_Price'] == True]
@@ -230,7 +248,7 @@ if uploaded_file is not None:
     cheap_same_price['cheapest_same_price_pct'] = cheap_same_price['count_cheap_same_price'] / cheap_same_price['total_offers']
     cheap_same_price = cheap_same_price.groupby(by='Model')['cheapest_same_price_pct'].mean(numeric_only=False).reset_index()
 
-    # Function to calculate the entropy of prices for each model
+    # Function to calculate the entropy of prices for each model ------------------ Binning assumes integers????
     def calculate_entropy(prices):
         probabilities = np.bincount(prices) / len(prices)
         return entropy(probabilities)
@@ -250,7 +268,10 @@ if uploaded_file is not None:
     if not long_timeframe:
         results.drop(columns=['num_price_changes'], inplace=True)
 
-    # Out of interest
+    display(results)
+
+    results.to_csv(f"{product}/{product}_results_per_model.csv", index=False)
+
     # Criteria to mark suspicious models
     mean_coefvar = results['mean_coef_var'].mean()
     changes_mean = results['num_price_changes'].mean()
