@@ -190,6 +190,8 @@ if uploaded_file is not None:
 
     df = df.reindex(columns=new_column_order)
     # ------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    df['Date'] = pd.to_datetime(df['Date'])
+
     avg_coef_var = df.groupby('Model')['coef_var_among_vendors'].mean().reset_index()
     avg_coef_var = avg_coef_var.rename(columns={'coef_var_among_vendors': 'mean_coef_var'})
 
@@ -268,10 +270,6 @@ if uploaded_file is not None:
 
     if not long_timeframe:
         results.drop(columns=['num_price_changes'], inplace=True)
-
-    display(results)
-
-    results.to_csv(f"{product}/{product}_results_per_model.csv", index=False)
 
     # Criteria to mark suspicious models
     mean_coefvar = results['mean_coef_var'].mean()
