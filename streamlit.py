@@ -30,10 +30,11 @@ uploaded_file = st.file_uploader("Upload your CSV file to get it analyzed regard
 if uploaded_file is not None:
 
     # Data cleaning ------------------------------------------------------------------------------------------------------------------------------------------
-    def detect_delimiter(filename):
-        with open(filename, 'r') as file:
-            sniffer = csv.Sniffer()
-            return sniffer.sniff(file.read(5000)).delimiter
+    def detect_delimiter(uploaded_file):
+        # Read the file buffer
+        file_content = uploaded_file.getvalue().decode('utf-8')
+        sniffer = csv.Sniffer()
+        return sniffer.sniff(file_content[:5000]).delimiter
 
     # To adjust for different column names in the CSV files
     column_mapping = {
