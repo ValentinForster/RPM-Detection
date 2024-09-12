@@ -5,8 +5,12 @@ from scipy.stats import entropy
 import csv
 
 st.title("RPM detection tool")
-st.write("""This tool will find indications of Resale Price Maintenance (RPM) in price data. To use it, upload your data as csv. The data should only concern one type of product and one region, e.g. Freezers in Austria.
-Each row should represent one offering by one vendor for a specific product. Your csv should look like this:""")
+
+st.write("""
+This tool will find indications of [Resale Price Maintenance (RPM)](https://en.wikipedia.org/wiki/Resale_price_maintenance) in price data. 
+To use it, upload your data as csv. The data should only concern one type of product and one region, e.g. Freezers in Austria.
+Each row should represent one offering by one vendor for a specific product. Your csv should look like this:
+""")
 
 example_df = {"Manufacturer": ["Samsung", "Samsung", "Apple", "..."],
               "Product": ["Galaxy A25", "Galaxy A25", "IPhone 15 (256 GB)", "..."],
