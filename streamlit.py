@@ -321,6 +321,16 @@ if uploaded_file is not None:
     sus['pct_suspicious_models'] = sus['sus_count'] / sus['total_models']
     sus = sus.sort_values(by='pct_suspicious_models', ascending=False)
 
-    st.dataframe(sus, hide_index=True)
+    # Create a toggle for the user to switch between views
+    view_option = st.radio("Choose a view:", ("Unfiltered", "Filtered"))
+    
+    # Define the filtered version of the DataFrame
+    if view_option == "Filtered":
+        st.dataframe(sus.head(3)
+    else:
+        # Display the unfiltered DataFrame
+        st.dataframe(sus)
+  
+    #st.dataframe(sus, hide_index=True)
     st.markdown("""**Explanation**""")
     st.write("This table shows the number as well as the percentage of suspicious models for each Manufacturer in the dataset.")
