@@ -3,6 +3,7 @@ import pandas as pd
 import numpy as np
 from scipy.stats import entropy
 import csv
+import time
 
 st.title("RPM detection tool")
 
@@ -34,7 +35,7 @@ uploaded_file = st.file_uploader("Upload your CSV file to get it analyzed regard
 if uploaded_file is not None:
     # Display a "Calculating..." message while the calculation is happening
     with st.spinner("Calculating... this may take a minute or two..."):
-
+        time.sleep(5)
         # Data cleaning ------------------------------------------------------------------------------------------------------------------------------------------
         def detect_delimiter(uploaded_file):
             # Read the file buffer
