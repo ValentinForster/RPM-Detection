@@ -324,7 +324,7 @@ if uploaded_file is not None:
     st.title("Results")
 
     # Create a toggle for the user to switch between views
-    view_option = st.radio(, ("Suspicious Manufacturers only", "All results"))
+    view_option = st.radio("", ("Suspicious Manufacturers only", "All results"))
     
     # Define the filtered version of the DataFrame
     if view_option == "Suspicious Manufacturers only":
