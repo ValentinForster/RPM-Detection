@@ -321,6 +321,8 @@ if uploaded_file is not None:
     sus['pct_suspicious_models'] = sus['sus_count'] / sus['total_models']
     sus = sus.sort_values(by='pct_suspicious_models', ascending=False)
 
+    st.title("Results")
+
     # Create a toggle for the user to switch between views
     view_option = st.radio("", ("Suspicious Manufacturers only", "All results"))
     
