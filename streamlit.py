@@ -324,7 +324,7 @@ if uploaded_file is not None:
     st.title("Results")
 
     # Create a toggle for the user to switch between views
-    view_option = st.radio("Change view", ("Suspicious Manufacturers only", "All results"))
+    view_option = st.radio(, ("Suspicious Manufacturers only", "All results"))
     
     # Define the filtered version of the DataFrame
     if view_option == "Suspicious Manufacturers only":
@@ -336,8 +336,5 @@ if uploaded_file is not None:
         st.dataframe(sus, hide_index=True)
         st.markdown("""**Explanation**""")
         st.write("This table shows the number as well as the percentage of suspicious models for each Manufacturer in the dataset.")
-
-    view_option = st.selectbox("Choose a view:", ("Unfiltered", "Filtered"))
-
   
     #st.dataframe(sus, hide_index=True)
