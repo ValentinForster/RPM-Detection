@@ -325,7 +325,7 @@ if uploaded_file is not None:
     view_option = st.radio("", ("Suspicious Manufacturers only", "All results"))
     
     # Define the filtered version of the DataFrame
-    if view_option == "Filtered":
+    if view_option == "Suspicious Manufacturers only":
         st.dataframe(sus.head(3))
     else:
         # Display the unfiltered DataFrame
