@@ -322,7 +322,7 @@ if uploaded_file is not None:
     sus = sus.sort_values(by='pct_suspicious_models', ascending=False)
 
     # Create a toggle for the user to switch between views
-    view_option = st.radio("Choose a view:", ("Unfiltered", "Filtered"))
+    view_option = st.radio("", ("Suspicious Manufacturers only", "All results"))
     
     # Define the filtered version of the DataFrame
     if view_option == "Filtered":
