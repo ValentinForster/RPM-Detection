@@ -326,7 +326,7 @@ if uploaded_file is not None:
     
     # Define the filtered version of the DataFrame
     if view_option == "Filtered":
-        st.dataframe(sus.head(3)
+        st.dataframe(sus.head(3))
     else:
         # Display the unfiltered DataFrame
         st.dataframe(sus)
