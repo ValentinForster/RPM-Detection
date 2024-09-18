@@ -9,7 +9,7 @@ st.title("RPM detection tool")
 
 st.write("""
 This tool will find indications of [Resale Price Maintenance (RPM)](https://en.wikipedia.org/wiki/Resale_price_maintenance) in price data. 
-To use it, upload your data as csv. The data should only concern one type of product and one region, e.g. Freezers in Austria.
+To use it, upload your data as csv. The data should ideally have prices without shipping and should only only contain prices for one country/state.
 Each row should represent one offering by one vendor for a specific product. Your csv should look like this:
 """)
 
