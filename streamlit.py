@@ -332,7 +332,7 @@ if uploaded_file is not None:
     if view_option == "Suspicious Manufacturers only":
         st.dataframe(sus.head(2), hide_index=True)
         st.markdown("""**How to interpret results**""")
-        st.write("This table shows only those manufacturers from the dataset, which are likely using RPM. They have 5 or more suspicious products and over 40 % of their products are suspicious.")
+        st.write("This table shows only those manufacturers in the dataset, which are likely using RPM. They have 5 or more suspicious products and more than 40 % of their products are suspicious.")
     else:
         # Display the unfiltered DataFrame
         st.dataframe(sus, hide_index=True)
