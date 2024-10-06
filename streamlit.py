@@ -440,9 +440,9 @@ if uploaded_file is not None:
 
     st.write(f"There are {len(sus_only)} suspicious models, which is {len(sus_only) / len(df) * 100:.2f}% of the total models.")
     if confidence > 0:
-        st.write("High confidence that the marked models are indicating RPM.")
+        st.markdown("**High confidence** that the marked models are indicating RPM.")
     else:
-        st.write("Medium confidence that the marked models are indicating RPM.")
+        st.markdown("**Medium confidence** that the marked models are indicating RPM.")
 
     # Create a toggle for the user to switch between views
     view_option = st.radio("", ("Suspicious Manufacturers only", "All results"))
