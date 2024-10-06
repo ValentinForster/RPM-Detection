@@ -431,22 +431,18 @@ if uploaded_file is not None:
             # Only suspicious manufacturers (at least 5 sus models and more than 50 % sus models)
             sus_manufacturers = result[(result['sus_count'] > 4) & (result['pct_suspicious_models'] > 0.4)]
         
-            if len(sus_manufacturers) == 0:
-                st.write("No suspicious manufacturers found.")
-            else:
-                st.write("Suspicious manufacturers (at least 5 suspicious models and more than 40% of all models being suspicious)")
-
-            st.write(f"There are {len(sus_only)} suspicious models, which is {len(sus_only) / len(df) * 100:.2f}% of the total models.")
-            if confidence > 0:
-                st.write("High confidence that the marked models are indicating RPM.")
-            else:
-                st.write("Medium confidence that the marked models are indicating RPM.")
-        else:
-            st.write("No RPM has been detected.")
-        
         sus_cluster_label = sus_only['cluster_dbscan'].unique()[0]
 
     st.title("Results")
+
+    if len(sus_manufacturers) == 0:
+                st.write("No suspicious manufacturers found.")
+
+    st.write(f"There are {len(sus_only)} suspicious models, which is {len(sus_only) / len(df) * 100:.2f}% of the total models.")
+    if confidence > 0:
+        st.write("High confidence that the marked models are indicating RPM.")
+    else:
+        st.write("Medium confidence that the marked models are indicating RPM.")
 
     # Create a toggle for the user to switch between views
     view_option = st.radio("", ("Suspicious Manufacturers only", "All results"))
