@@ -330,11 +330,6 @@ if uploaded_file is not None:
         # Add cluster labels to the dataframe
         df['cluster_dbscan'] = labels_dbscan
         
-        # display(df[df['Manufacturer'] == 'Siemens'])
-        # display(df[df['Manufacturer'] == 'Miele'])
-        
-        display(df)
-        
         # Calculate Silhouette Score and print it
         dbscan_silhouette = silhouette_score(scaled_data, df['cluster_dbscan'])
         print(f"Silhouette Score for DBSCAN: {dbscan_silhouette}")
@@ -370,9 +365,6 @@ if uploaded_file is not None:
             # Just in case: Only keep low outliers in, remove high outliers from suspicious cluster, if there are any (normally not the case)
             print(f"These were removed from the suspicious cluster via the Same price cutoff: {non_sus_same_price_cutoff}")
             sus_only = outliers[outliers['same_price_pct'] >= non_sus_same_price_cutoff]
-            display(outliers[outliers['same_price_pct'] < non_sus_same_price_cutoff])
-        
-            #display(sus_only.sort_values(by='mean_coef_var', ascending=False))
         
             alpha_level = 0.05
         
@@ -419,9 +411,6 @@ if uploaded_file is not None:
                         print("Result: The same cluster also has significantly less price_changes than the other(s). Cluster likely represents RPM")
                     else:
                         print("Result: The same cluster DOES NOT have significantly less price_changes than the other")
-                    
-                    # display(sus_only[(sus_only['Manufacturer'] != "Miele") | (sus_only['Manufacturer'] != "Liebherr")].sort_values(by='mean_coef_var', ascending=False))
-                    # display(non_sus[(non_sus['Manufacturer'] == "Miele") | (non_sus['Manufacturer'] == "Liebherr")].sort_values(by='mean_coef_var', ascending=True))
             else:
                 print("Time span too short to validate RPM cluster using num_price_changes")
 
@@ -429,11 +418,9 @@ if uploaded_file is not None:
             # Get the number of models per manufacturer
             value_counts = df['Manufacturer'].value_counts().reset_index()
             value_counts.columns = ['Manufacturer', 'total_models']
-            #display(value_counts)
         
             # Group by manufacturer and count occurrences
             sus = sus_only.groupby('Manufacturer').size().reset_index(name='sus_count')
-            #display(sus)
         
             # Merge the DataFrames
             result = pd.merge(value_counts, sus, on='Manufacturer', how='left').fillna(0)
@@ -448,10 +435,7 @@ if uploaded_file is not None:
                 print("No suspicious manufacturers found.")
             else:
                 print("Suspicious manufacturers (at least 5 suspicious models and more than 40% of all models being suspicious)")
-                display(sus_manufacturers)
-        
-            print("Full result of analysis")
-            display(result)
+
             print(f"There are {len(sus_only)} suspicious models, which is {len(sus_only) / len(df) * 100:.2f}% of the total models.")
             if confidence > 0:
                 print("High confidence that the marked models are indicating RPM.")
@@ -459,8 +443,6 @@ if uploaded_file is not None:
                 print("Medium confidence that the marked models are indicating RPM.")
         else:
             print("No RPM has been detected.")
-        
-        display(sus_only.sort_values(by='entropy', ascending=False))
         
         sus_cluster_label = sus_only['cluster_dbscan'].unique()[0]
 
