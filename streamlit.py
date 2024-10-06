@@ -457,5 +457,5 @@ if uploaded_file is not None:
         st.dataframe(result, hide_index=True)
         st.markdown("""**How to interpret the results**""")
         st.write("This table shows the number as well as the percentage of suspicious models for each Manufacturer in the dataset. Please note that a high pct_suspicious_models with a small sample size (e.g. < 5 suspicious models) is not meaningful.")
-  
-    #st.dataframe(sus, hide_index=True)
+
+    st.write("Interested in how it works? See our [Paper](https://www.example.com/) or look at the [Source Code on Github](https://www.example.com/)")
