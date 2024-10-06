@@ -432,17 +432,17 @@ if uploaded_file is not None:
             sus_manufacturers = result[(result['sus_count'] > 4) & (result['pct_suspicious_models'] > 0.4)]
         
             if len(sus_manufacturers) == 0:
-                print("No suspicious manufacturers found.")
+                st.write("No suspicious manufacturers found.")
             else:
-                print("Suspicious manufacturers (at least 5 suspicious models and more than 40% of all models being suspicious)")
+                st.write("Suspicious manufacturers (at least 5 suspicious models and more than 40% of all models being suspicious)")
 
-            print(f"There are {len(sus_only)} suspicious models, which is {len(sus_only) / len(df) * 100:.2f}% of the total models.")
+            st.write(f"There are {len(sus_only)} suspicious models, which is {len(sus_only) / len(df) * 100:.2f}% of the total models.")
             if confidence > 0:
-                print("High confidence that the marked models are indicating RPM.")
+                st.write("High confidence that the marked models are indicating RPM.")
             else:
-                print("Medium confidence that the marked models are indicating RPM.")
+                st.write("Medium confidence that the marked models are indicating RPM.")
         else:
-            print("No RPM has been detected.")
+            st.write("No RPM has been detected.")
         
         sus_cluster_label = sus_only['cluster_dbscan'].unique()[0]
 
