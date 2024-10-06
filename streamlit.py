@@ -4,6 +4,12 @@ import numpy as np
 from scipy.stats import entropy
 import csv
 import time
+import matplotlib.pyplot as plt
+from sklearn.cluster import DBSCAN
+from sklearn.preprocessing import StandardScaler
+from sklearn.decomposition import PCA
+from scipy.stats import mannwhitneyu
+from sklearn.metrics import silhouette_score
 
 st.title("RPM detection tool")
 
