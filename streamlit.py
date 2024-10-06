@@ -38,7 +38,7 @@ with open("Gefrierschränke/Gefrierschränke.csv", 'rb') as f:
 
 uploaded_file = st.file_uploader("Upload your CSV file to get it analyzed regarding RPM", type="csv")
 
-st.write("Interested in how it works? See our [Paper](https://www.example.com/) or look at the [Source Code on Github](https://www.example.com/)")
+st.write("Interested in how it works? Read our [Paper](https://www.example.com/) or look at the [Source Code on Github](https://www.example.com/)")
 
 if uploaded_file is not None:
     # Display a "Calculating..." message while the calculation is happening
