@@ -14,6 +14,8 @@ import os
 
 st.title("RPM detection tool")
 
+st.write("File exists:", os.path.exists("Loudspeakers/Loudspeakers.csv"))
+
 st.write("""
 This tool will find indications of [Resale Price Maintenance (RPM)](https://en.wikipedia.org/wiki/Resale_price_maintenance) in price data. 
 To use it, upload your data as csv. The data should ideally have prices without shipping and should only only contain prices for one country/state.
