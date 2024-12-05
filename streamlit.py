@@ -10,6 +10,7 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.decomposition import PCA
 from scipy.stats import mannwhitneyu
 from sklearn.metrics import silhouette_score
+import os
 
 st.title("RPM detection tool")
 
@@ -27,8 +28,10 @@ example_df = {"Manufacturer": ["Samsung", "Samsung", "Apple", "..."],
 
 st.dataframe(example_df, hide_index=True)
 
+file_path = os.path.join(os.path.dirname(__file__), "Loudspeakers/Loudspeakers.csv")
+
 # Offer the CSV file for download as bytes
-with open("Loudspeakers/Loudspeakers.csv", 'rb') as f:
+with open(file_path, 'rb') as f:
     st.download_button(
         label="Download sample data",
         data=f,
