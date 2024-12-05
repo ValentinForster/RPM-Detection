@@ -14,8 +14,6 @@ import os
 
 st.title("RPM detection tool")
 
-st.write("File exists:", os.path.exists("Freezers.csv"))
-
 st.write("""
 This tool will find indications of [Resale Price Maintenance (RPM)](https://en.wikipedia.org/wiki/Resale_price_maintenance) in price data. 
 To use it, upload your data as csv. The data should ideally have prices without shipping and should only only contain prices for one country/state.
@@ -30,10 +28,8 @@ example_df = {"Manufacturer": ["Samsung", "Samsung", "Apple", "..."],
 
 st.dataframe(example_df, hide_index=True)
 
-file_path = os.path.join(os.path.dirname(__file__), "Loudspeakers/Loudspeakers.csv")
-
 # Offer the CSV file for download as bytes
-with open(file_path, 'rb') as f:
+with open("Freezers.csv", 'rb') as f:
     st.download_button(
         label="Download sample data",
         data=f,
