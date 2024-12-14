@@ -85,9 +85,9 @@ if uploaded_file is not None:
         
         # Drop all columns except the ones we need
         df = df[['Model','Price_w/o_shipping','Vendor', 'Manufacturer', 'Date']]
+        print(f"Initial number of rows: {len(df)}")
         
         # Drop rows with NA
-        print(f"Initial number of rows: {len(df)}")
         df = df.dropna()
         print(f"After dropping NA: {len(df)}")
         
@@ -302,7 +302,7 @@ if uploaded_file is not None:
 
         # Define the ranges for eps and min_samples to find the optimal parameters according to the Sillhouette Score
         eps_range = np.arange(0.1, 1.7, 0.1) # Zwischen 0.1 und 5 getestet: KS: 1, WS: 1.2, GefrierS: 1.1, GeschirrS: 0.7, Lautsprecher: 1.4. Aber: ohne Miele & Liebherr 0.1 optimal bei KS
-        min_samples_range = range(3, len(df)//2) # min_samples cannot be greater than half of samples. Start with 3, since every manufacturer in the remaining data has at least 3 models
+        min_samples_range = range(3, len(df)//2, 2) # min_samples cannot be greater than half of samples. Start with 3, since every manufacturer in the remaining data has at least 3 models
         
         best_eps = None
         best_min_samples = None
@@ -342,7 +342,7 @@ if uploaded_file is not None:
         print(f"Number of clusters: {len(cluster_labels)}")
         
         # If only one cluster is detected or more than 4 clusters are detected, there most likely is no RPM
-        if len(cluster_labels) == 1 or len(cluster_labels) > 4:
+        if len(cluster_labels) == 1 or len(cluster_labels) > 9:
             print("No RPM has been detected")
         else:
             # Create dict with cluster as key and 25th percentile coef_var as value. Reason: If the outlier cluster has at least 25% low outliers, we correctly identify it
@@ -364,10 +364,19 @@ if uploaded_file is not None:
         
             # Define fixed threshold as safety measure, since otherwise low outliers, which are only suspicious compared to the other products, are flagged
             non_sus_same_price_cutoff = 0.65
+            sus_cheapest_same_price_cutoff = 0.85
         
             # Just in case: Only keep low outliers in, remove high outliers from suspicious cluster, if there are any (normally not the case)
-            print(f"These were removed from the suspicious cluster via the Same price cutoff: {non_sus_same_price_cutoff}")
+            print(f"These were removed from the suspicious cluster via the Same price cutoff ({non_sus_same_price_cutoff})")
             sus_only = outliers[outliers['same_price_pct'] >= non_sus_same_price_cutoff]
+            display(outliers[outliers['same_price_pct'] < non_sus_same_price_cutoff])
+        
+            # Just in case: Add definitely suspicious models, which were somehow not part of the suspicious cluster
+            df_cheap_threshold = df[df['cheapest_same_price_pct'] > 0.85]
+            sus_only = pd.concat([sus_only, df_cheap_threshold])
+            sus_only = sus_only.drop_duplicates()
+        
+            #display(sus_only.sort_values(by='mean_coef_var', ascending=False))
         
             alpha_level = 0.05
         
@@ -414,6 +423,9 @@ if uploaded_file is not None:
                         print("Result: The same cluster also has significantly less price_changes than the other(s). Cluster likely represents RPM")
                     else:
                         print("Result: The same cluster DOES NOT have significantly less price_changes than the other")
+                    
+                    #display(sus_only[(sus_only['Manufacturer'] != "Miele") | (sus_only['Manufacturer'] != "Liebherr")].sort_values(by='mean_coef_var', ascending=False))
+                    #display(non_sus[(non_sus['Manufacturer'] == "Miele") | (non_sus['Manufacturer'] == "Liebherr")].sort_values(by='mean_coef_var', ascending=True))
             else:
                 print("Time span too short to validate RPM cluster using num_price_changes")
 
@@ -421,18 +433,39 @@ if uploaded_file is not None:
             # Get the number of models per manufacturer
             value_counts = df['Manufacturer'].value_counts().reset_index()
             value_counts.columns = ['Manufacturer', 'total_models']
+            #display(value_counts)
         
             # Group by manufacturer and count occurrences
             sus = sus_only.groupby('Manufacturer').size().reset_index(name='sus_count')
+            #display(sus)
         
             # Merge the DataFrames
             result = pd.merge(value_counts, sus, on='Manufacturer', how='left').fillna(0)
             result['sus_count'] = result['sus_count'].astype(int)
-            result['pct_suspicious_models'] = result['sus_count'] / result['total_models']
+            result['pct_suspicious_models'] = round(result['sus_count'] / result['total_models'] * 100, 2)
             result = result.sort_values(by=['pct_suspicious_models', 'sus_count'], ascending=False)
         
+            total_sus_models = result['sus_count'].sum()
+            result['pct_of_sus_cluster'] = round(result['sus_count'] / total_sus_models * 100, 2)
+        
             # Only suspicious manufacturers (at least 5 sus models and more than 50 % sus models)
-            sus_manufacturers = result[(result['sus_count'] > 4) & (result['pct_suspicious_models'] > 0.4)]
+            sus_manufacturers = result[(result['sus_count'] > 4) & (result['pct_suspicious_models'] > 40)]
+        
+            if len(sus_manufacturers) == 0:
+                print("No suspicious manufacturers found.")
+            else:
+                print("Suspicious manufacturers (at least 5 suspicious models and more than 40% of all models being suspicious)")
+                display(sus_manufacturers)
+        
+            print("Full result of analysis")
+            display(result)
+            print(f"There are {len(sus_only)} suspicious models, which is {len(sus_only) / len(df) * 100:.2f}% of the total models.")
+            if confidence > 0:
+                print("High confidence that the marked models are indicating RPM.")
+            else:
+                print("Medium confidence that the marked models are indicating RPM.")
+        else:
+            print("No RPM has been detected.")
         
         sus_cluster_label = sus_only['cluster_dbscan'].unique()[0]
 
