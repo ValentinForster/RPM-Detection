@@ -369,7 +369,7 @@ if uploaded_file is not None:
             # Just in case: Only keep low outliers in, remove high outliers from suspicious cluster, if there are any (normally not the case)
             print(f"These were removed from the suspicious cluster via the Same price cutoff ({non_sus_same_price_cutoff})")
             sus_only = outliers[outliers['same_price_pct'] >= non_sus_same_price_cutoff]
-            display(outliers[outliers['same_price_pct'] < non_sus_same_price_cutoff])
+            #display(outliers[outliers['same_price_pct'] < non_sus_same_price_cutoff])
         
             # Just in case: Add definitely suspicious models, which were somehow not part of the suspicious cluster
             df_cheap_threshold = df[df['cheapest_same_price_pct'] > 0.85]
