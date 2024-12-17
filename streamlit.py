@@ -302,7 +302,7 @@ if uploaded_file is not None:
 
         # Define the ranges for eps and min_samples to find the optimal parameters according to the Sillhouette Score
         eps_range = np.arange(0.1, 1.7, 0.1) # Zwischen 0.1 und 5 getestet: KS: 1, WS: 1.2, GefrierS: 1.1, GeschirrS: 0.7, Lautsprecher: 1.4. Aber: ohne Miele & Liebherr 0.1 optimal bei KS
-        min_samples_range = range(3, len(df)//2, 5) # min_samples cannot be greater than half of samples. Start with 3, since every manufacturer in the remaining data has at least 3 models
+        min_samples_range = range(3, len(df)//2, len(df)//50) # min_samples cannot be greater than half of samples. Start with 3, since every manufacturer in the remaining data has at least 3 models
         
         best_eps = None
         best_min_samples = None
