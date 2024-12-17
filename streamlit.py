@@ -437,6 +437,7 @@ if uploaded_file is not None:
             result['sus_count'] = result['sus_count'].astype(int)
             result['pct_suspicious_models'] = round(result['sus_count'] / result['total_models'] * 100, 2)
             result = result.sort_values(by=['pct_suspicious_models', 'sus_count'], ascending=False)
+            vendor_var.rename(columns={"mean": "mean_among_vendors", 'std': 'std_among_vendors', 'nunique': 'distinct_vendor_prices'}, inplace=True)
         
             total_sus_models = result['sus_count'].sum()
             result['pct_of_sus_cluster'] = round(result['sus_count'] / total_sus_models * 100, 2)
