@@ -473,16 +473,20 @@ if uploaded_file is not None:
     else:
         st.markdown("**Medium confidence** that the marked models are indicating RPM.")
 
-    # Create a toggle for the user to switch between views
-    view_option = st.radio("", ("Suspicious Manufacturers only", "All results"))
+    # # Create a toggle for the user to switch between views
+    # view_option = st.radio("", ("Suspicious Manufacturers only", "All results"))
     
-    # Define the filtered version of the DataFrame
-    if view_option == "Suspicious Manufacturers only":
-        st.dataframe(sus_manufacturers, hide_index=True)
-        st.markdown("""**How to interpret the results**""")
-        st.write("This table shows only those manufacturers in the dataset, which are likely using RPM. They have 5 or more suspicious products and more than 40 % of their products are suspicious.")
-    else:
-        # Display the unfiltered DataFrame
-        st.dataframe(result, hide_index=True)
-        st.markdown("""**How to interpret the results**""")
-        st.write("This table shows the number as well as the percentage of suspicious models for each Manufacturer in the dataset. Please note that a high pct_suspicious_models with a small sample size (e.g. < 5 suspicious models) is not meaningful.")
+    # # Define the filtered version of the DataFrame
+    # if view_option == "Suspicious Manufacturers only":
+    #     st.dataframe(sus_manufacturers, hide_index=True)
+    #     st.markdown("""**How to interpret the results**""")
+    #     st.write("This table shows only those manufacturers in the dataset, which are likely using RPM. They have 5 or more suspicious products and more than 40 % of their products are suspicious.")
+    # else:
+    #     # Display the unfiltered DataFrame
+    #     st.dataframe(result, hide_index=True)
+    #     st.markdown("""**How to interpret the results**""")
+    #     st.write("This table shows the number as well as the percentage of suspicious models for each Manufacturer in the dataset. Please note that a high pct_suspicious_models with a small sample size (e.g. < 5 suspicious models) is not meaningful.")
+    st.markdown("""**Full results:**""")
+    st.dataframe(result, hide_index=True)
+    st.markdown("""**Manufacturers likely using RPM:**""")
+    st.dataframe(sus_manufacturers, hide_index=True)
