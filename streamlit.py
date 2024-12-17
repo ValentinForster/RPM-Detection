@@ -437,7 +437,7 @@ if uploaded_file is not None:
             result['sus_count'] = result['sus_count'].astype(int)
             result['pct_suspicious_models'] = round(result['sus_count'] / result['total_models'] * 100, 2)
             result = result.sort_values(by=['pct_suspicious_models', 'sus_count'], ascending=False)
-            vendor_var.rename(columns={"mean": "mean_among_vendors", 'std': 'std_among_vendors', 'nunique': 'distinct_vendor_prices'}, inplace=True)
+            result.rename(columns={"total_models": "Total Products", 'sus_count': 'Suspicious Products', 'pct_suspicious_models': '% suspicious', 'pct_of_sus_cluster': '% of all suspicious products'}, inplace=True)
         
             total_sus_models = result['sus_count'].sum()
             result['pct_of_sus_cluster'] = round(result['sus_count'] / total_sus_models * 100, 2)
@@ -470,9 +470,9 @@ if uploaded_file is not None:
 
     st.write(f"There are {len(sus_only)} suspicious models, which is {len(sus_only) / len(df) * 100:.2f}% of the total models.")
     if confidence > 0:
-        st.markdown("**High confidence** that the marked models are indicating RPM.")
+        st.markdown("**High confidence** that the marked products are indicative of RPM.")
     else:
-        st.markdown("**Medium confidence** that the marked models are indicating RPM.")
+        st.markdown("**Medium confidence** that the marked models are indicative of RPM.")
 
     # # Create a toggle for the user to switch between views
     # view_option = st.radio("", ("Suspicious Manufacturers only", "All results"))
