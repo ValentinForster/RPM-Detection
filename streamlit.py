@@ -437,13 +437,13 @@ if uploaded_file is not None:
             result['sus_count'] = result['sus_count'].astype(int)
             result['pct_suspicious_models'] = round(result['sus_count'] / result['total_models'] * 100, 2)
             result = result.sort_values(by=['pct_suspicious_models', 'sus_count'], ascending=False)
-            result.rename(columns={"total_models": "Total Products", 'sus_count': 'Suspicious Products', 'pct_suspicious_models': '% suspicious', 'pct_of_sus_cluster': '% of all suspicious products'}, inplace=True)
         
             total_sus_models = result['sus_count'].sum()
             result['pct_of_sus_cluster'] = round(result['sus_count'] / total_sus_models * 100, 2)
+            result.rename(columns={"total_models": "Total Products", 'sus_count': 'Suspicious Products', 'pct_suspicious_models': '% suspicious', 'pct_of_sus_cluster': '% of all suspicious products'}, inplace=True)
         
             # Only suspicious manufacturers (at least 5 sus models and more than 50 % sus models)
-            sus_manufacturers = result[(result['sus_count'] > 4) & (result['pct_suspicious_models'] > 40)]
+            sus_manufacturers = result[(result['Suspicious Products'] > 4) & (result['% suspicious'] > 40)]
         
             if len(sus_manufacturers) == 0:
                 print("No suspicious manufacturers found.")
