@@ -43,7 +43,7 @@ st.write("Interested in how it works? Read our [Paper](https://www.example.com/)
 
 if uploaded_file is not None:
     # Display a "Calculating..." message while the calculation is happening
-    with st.spinner("Calculating... this may take a minute or two..."):
+    with st.spinner("Calculating... this may take a few minutes..."):
         # Data cleaning ------------------------------------------------------------------------------------------------------------------------------------------
         def detect_delimiter(uploaded_file):
             # Read the file buffer
