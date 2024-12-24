@@ -56,7 +56,7 @@ if uploaded_file is not None:
             'Model': ['Model', 'Product', 'Item'],
             'Vendor': ['Vendor', 'Seller', 'Retailer'],
             'Price_w/o_shipping': ['Price_w/o_shipping', 'Price', 'Cost'],
-            'Date': ['Date', 'Timestamp', 'SaleDate']
+            'Date': ['Date', 'Timestamp', 'Timepoint']
         }
     
         delimiter = detect_delimiter(uploaded_file)
