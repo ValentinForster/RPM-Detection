@@ -470,7 +470,7 @@ if uploaded_file is not None:
 
     st.write(f"There are {len(sus_only)} suspicious models, which is {len(sus_only) / len(df) * 100:.2f}% of the total models.")
     if confidence > 0:
-        st.markdown("**High confidence** that the marked products are indicative of RPM.")
+        st.markdown("<u>High confidence</u> that the marked products are indicative of RPM.", unsafe_allow_html=True)
     else:
         st.markdown("**Medium confidence** that the marked models are indicative of RPM.")
 
