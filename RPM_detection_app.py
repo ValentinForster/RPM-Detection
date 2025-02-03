@@ -472,7 +472,7 @@ if uploaded_file is not None:
     if confidence > 0:
         st.markdown("<u>High confidence</u> that the marked products are indicative of RPM.", unsafe_allow_html=True)
     else:
-        st.markdown("**Medium confidence** that the marked models are indicative of RPM.")
+        st.markdown("<u>Medium confidence<u> that the marked models are indicative of RPM.", unsafe_allow_html=True)
 
     # # Create a toggle for the user to switch between views
     # view_option = st.radio("", ("Suspicious Manufacturers only", "All results"))
